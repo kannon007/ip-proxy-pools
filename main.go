@@ -1,5 +1,8 @@
 package main
 
+import "fmt"
+
 func main() {
-	$END$
+	url :=""
+	fmt.Println(url)
 }
