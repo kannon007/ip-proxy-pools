@@ -1,8 +1,8 @@
 package main
 
-import "fmt"
+import "github.com/z-wyd/ip-proxy-pools/support"
 
 func main() {
-	url :=""
-	fmt.Println(url)
+	go support.Patch()
+	support.Server("0.0.0.0:8080")
 }
