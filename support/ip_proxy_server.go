@@ -1,17 +1,81 @@
 package support
 
 import (
+	"bytes"
 	"fmt"
+	"golang.org/x/sys/windows/registry"
+	"golang.org/x/text/encoding/simplifiedchinese"
 	"io"
+	"log"
+	"os/exec"
+	"strings"
+	"syscall"
+
 	"net"
 	"net/http"
 	"net/url"
+
+	"strconv"
 	"time"
 )
 
-func Server(listen string) {
+func Server(port int) {
 	http.Handle("/", &Pxy{})
-	http.ListenAndServe(listen, nil)
+	http.ListenAndServe("0.0.0.0:"+strconv.Itoa(port), nil)
+}
+
+func SetSysProxy(ip string, port int) {
+
+	k, err := registry.OpenKey(registry.CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", registry.ALL_ACCESS)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer k.Close()
+
+	err = k.SetDWordValue("ProxyEnable", uint32(1))
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = k.SetExpandStringValue("ProxyServer", ip+":"+strconv.Itoa(port))
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = k.SetExpandStringValue("ProxyOverride", "*.ffcs.cn;192.168.*;125.0.0.1;<local>")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+}
+
+func out(byte []byte) {
+
+	decodeBytes, _ := simplifiedchinese.GB18030.NewDecoder().Bytes(byte)
+
+	log.Println(string(decodeBytes))
+}
+
+func ExecCmd(cmd string) {
+	args := strings.Split(cmd, " ")
+	var c *exec.Cmd
+
+	if len(args) > 1 {
+		cmdArgs := args[1:]
+		c = exec.Command(args[0], cmdArgs...)
+	} else {
+		c = exec.Command(args[0])
+	}
+	c.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	var out bytes.Buffer
+
+	c.Stdout = &out
+	c.Run()
+	//out,_ := c.Out()
+	log.Println(out.String())
 }
 
 type Pxy struct {

@@ -3,6 +3,7 @@ module ip-proxy-pools
 go 1.14
 
 require (
+	gitee.com/wydcn/go-tools v0.0.0-20201120092058-7aa47230da31
 	github.com/PuerkitoBio/goquery v1.5.0 // indirect
 	github.com/antchfx/htmlquery v1.0.0 // indirect
 	github.com/antchfx/xmlquery v1.0.0 // indirect
@@ -17,7 +18,6 @@ require (
 	github.com/gocolly/colly v1.2.0
 	github.com/gofrs/uuid v3.3.0+incompatible // indirect
 	github.com/golang/protobuf v1.4.3 // indirect
-	github.com/jinzhu/gorm v1.9.2
 	github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a // indirect
 	github.com/jinzhu/now v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.10 // indirect
@@ -31,7 +31,8 @@ require (
 	github.com/ugorji/go v1.2.0 // indirect
 	go.etcd.io/bbolt v1.3.5 // indirect
 	golang.org/x/crypto v0.0.0-20201117144127-c1f2f97bffc9 // indirect
-	golang.org/x/sys v0.0.0-20201118182958-a01c418693c7 // indirect
+	golang.org/x/sys v0.0.0-20201118182958-a01c418693c7
+	golang.org/x/text v0.3.2
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/resty.v1 v1.12.0
 	gopkg.in/yaml.v2 v2.3.0 // indirect
